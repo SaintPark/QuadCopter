@@ -243,10 +243,17 @@ void setup() {
 
 void loop()
 {
+  static long skips=0;
   // We want this to execute at 50Hz if possible
   // -------------------------------------------
   if (DIYmillis()-fast_loopTimer > 19) 
   {
+   #if DEBUG_TIMING == 1
+	Serial.print("\tDt:\t");
+    Serial.print(DIYmillis()-fast_loopTimer);
+    Serial.print("\tSkips:\t");
+    Serial.print(skips);
+   #endif
     deltaMiliSeconds = DIYmillis() - fast_loopTimer;
     fast_loopTimer   = DIYmillis();
               
@@ -264,9 +271,22 @@ void loop()
     //PORTD &= B10111111;
   
     mainLoop_event();
-    
-    Serial.print((DIYmillis()-fast_loopTimer));
+
+   #if DEBUG_TIMING == 1
+	skips=0;
+    Serial.print("\tt:\t");
+    Serial.print(DIYmillis()-fast_loopTimer);
+   #endif
+   #if DEBUG_TIMING==1 || DEBUG_ROLL==1 || DEBUG_IMUCOMMS==1
+    Serial.println("\t-0-");	 // This line for debugging only
+   #endif
   }
+ #if DEBUG_TIMING == 1
+  else
+  {
+	  skips++;
+  }
+ #endif
 }
 
 void fast_loop()
@@ -593,16 +613,16 @@ void update_current_flight_mode(void)
 			servo_out[CH_PITCH] = ((radio_in[CH_PITCH] - radio_trim[CH_PITCH]) * 45 * REVERSE_PITCH) / 500;		// floating point value of pitch "servo" command - between -45 and 45 degrees
 			servo_out[CH_THROTTLE]  = radio_in[CH_THROTTLE];													// even though servo_out is a float - this number should just hold the integer throttle stick command.  It is different from the roll, pitch, and yaw "servo" commands
 			servo_out[CH_RUDDER] = ((radio_in[CH_RUDDER] - radio_trim[CH_RUDDER]) * 45 * REVERSE_RUDDER) / 500;	// floating point value of yaw "servo" command - between -45 and 45 degrees
-                       #if DEBUG_INFLIGHT == 1
-                        Serial.print("  RadioTrim: ");
-                        Serial.print(radio_trim[CH_ROLL]);
-                        Serial.print("  RateSetPoint: ");
-                        Serial.print(999,DEC);
-                        Serial.print("  SensorRate: ");
-                        Serial.print(roll_rate_sensor/50,DEC);
-                        Serial.print("  EffStickPosition: ");
-                        Serial.print(servo_out[CH_ROLL],DEC);
-                       #endif
+           #if DEBUG_ROLL == 1
+            //Serial.print("  RadioTrim: ");
+			//Serial.print(radio_trim[CH_ROLL]);
+			//Serial.print("  RateSetPoint: ");
+			//Serial.print(999,DEC);
+			//Serial.print("  SensorRate: ");
+			//Serial.print(roll_rate_sensor/50,DEC);
+			//Serial.print("  EffStickPosition: ");
+			//Serial.print(servo_out[CH_ROLL],DEC);
+           #endif
 			break;
 
 		case QUAD_CLOSELOOP:

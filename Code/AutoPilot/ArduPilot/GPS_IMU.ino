@@ -87,10 +87,9 @@ void decode_gps(void)
 			case 0:	
 				if(data == 'D'){//0x44){
 					IMU_step++; //First byte of data packet header is correct, so jump to the next step
-				}
+					}
                                 else
                                 {
-					Serial.println("IMU parser Case 0 fail");	 // This line for debugging only
 					IMU_step=0;		 //For consistency.	
 				}
 				break; 
@@ -99,7 +98,6 @@ void decode_gps(void)
 				if(data == 'I'){//0x49){
 					 IMU_step++;	//Second byte of data packet header is correct
 				}else {	
-					Serial.println("IMU parser Case 1 fail");	 // This line for debugging only
 					IMU_step=0;		 //Second byte is not correct so restart to step zero and try again.	
 				}	 
 				break;
@@ -108,7 +106,6 @@ void decode_gps(void)
 				if(data == 'Y'){//0x59){
 					 IMU_step++;	//Third byte of data packet header is correct
 				}else {
-					Serial.println("IMU parser Case 2 fail");	 // This line for debugging only
 					IMU_step=0;		 //Third byte is not correct so restart to step zero and try again.
 				}		 
 				break;
@@ -116,18 +113,18 @@ void decode_gps(void)
 			case 3:	
 			if(data == 'd'){//0x64){
 					 IMU_step++;	//Fourth byte of data packet header is correct, Header complete
-				} else {
-					Serial.print("IMU parser Case 3 fail. ");	// This line for debugging only
+			} else {
 					//Serial.print(data,DEC);								// This line for debugging only
 					//Serial.println(" instead of 100");					// This line for debugging only
 					IMU_step=0;		 //Fourth byte is not correct so restart to step zero and try again.
 				}		 
-				break;
+        		break;
 
 			case 4:	
 				payload_length = data;
 				checksum(payload_length);
 				IMU_step++;		
+//				Serial.println("IMU parser length pass");	 // This line for debugging only
 				if (payload_length > 28){
 					IMU_step=0;	 //Bad data, so restart to step zero and try again.		 
 					payload_counter=0;
@@ -137,18 +134,19 @@ void decode_gps(void)
 					//Serial.print("Recieved bad payload length of ");	// This line for debugging only
 					//Serial.print(payload_length,DEC);					// This line for debugging only
 					//Serial.println(" bytes.  Must be 28 or less");	// This line for debugging only
+//					Serial.println("IMU parser length fail");	 // This line for debugging only
 				} 
 				break;
 
 			case 5:	
 				message_num = data;
-                               #if DEBUG_INFLIGHT == 2
+                               #if DEBUG_IMUCOMMS == 1
                                 if(message_num==0x02)
-                                  Serial.println("Got a IMU attitude packet");
+                                  Serial.print("Got a IMU attitude packet");
                                 else if(message_num==0x05)
-                                  Serial.println("Got a IMU rates packet");
+                                  Serial.print("Got a IMU rates packet");
                                 else if(message_num==0x06)
-                                  Serial.println("Got a combined IMU packet");
+                                  Serial.print("Got a combined IMU packet");
                                #endif
 				checksum(data);
 				IMU_step++;		 
@@ -193,9 +191,9 @@ void decode_gps(void)
 						Serial.print("Invalid message number = ");
 						Serial.println(message_num,DEC);
 					}
-                                       #if DEBUG_INFLIGHT == 2
-         				Serial.println("MSG Checksum good");	//good checksum
-                                       #endif
+                       #if DEBUG_IMUCOMMS == 1
+         				Serial.print("MSG Checksum good");	//good checksum
+                       #endif
 				} else {
 					Serial.println("MSG Checksum error");	//bad checksum
 					imu_checksum_error_count++;

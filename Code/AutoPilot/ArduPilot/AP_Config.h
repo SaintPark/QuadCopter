@@ -41,9 +41,9 @@ These Flight Modes can be changed either here or directly in events.pde
 					// 8 = Debug the Throttle
 					// 9 = Radio Min Max values
 
-#define DEBUG_INFLIGHT 1   // 0 = no debug
-			   // 1 = Debug Roll RadioIn, AngleSetPoint, StickPosition, RollDiffPwm
-			   // 2 = Debug Rate Reception From IMU
+#define DEBUG_TIMING 1   // Print timing messages
+#define DEBUG_ROLL 1     // Debug Roll RadioIn, AngleSetPoint, StickPosition, RollDiffPwm
+#define DEBUG_IMUCOMMS 0 // Debug Rate Reception From IMU
 
 
 /***************************************/

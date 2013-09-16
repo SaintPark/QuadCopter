@@ -16,22 +16,22 @@ void quad_trackrollpitch(void)
   long ReferencePitch; // Reference pitch angle, in degrees * 100
 
   ReferenceRoll  = ((long)(radio_in[CH_ROLL]  - radio_trim[CH_ROLL]) * 9 * REVERSE_ROLL);// floating point value of reference roll command - between -45 and 45 degrees
- #if DEBUG_INFLIGHT == 1
-  Serial.print("  RadioTrim: ");
-  Serial.print(radio_trim[CH_ROLL]);
-  Serial.print("  AngleSetPoint: ");
-  Serial.print(ReferenceRoll/100,DEC);
+ #if DEBUG_ROLL == 1
+  //Serial.print("  RadioTrim: ");
+  //Serial.print(radio_trim[CH_ROLL]);
+  //Serial.print("  AngleSetPoint: ");
+  //Serial.print(ReferenceRoll/100,DEC);
  #endif
   ReferencePitch = ((long)(radio_in[CH_PITCH] - radio_trim[CH_PITCH]) * 9 * REVERSE_PITCH);// floating point value of reference pitch command - between -45 and 45 degrees
 
   servo_out[CH_ROLL]  = PID((ReferenceRoll  - roll_sensor), deltaMiliSeconds, CASE_SERVO_ROLL);
   servo_out[CH_PITCH] = PID((ReferencePitch - pitch_sensor), deltaMiliSeconds, CASE_SERVO_PITCH);
   
- #if DEBUG_INFLIGHT == 1
-  Serial.print("  SensorAngle: ");
-  Serial.print(roll_sensor/100,DEC);
-  Serial.print("  StickPosition: ");
-  Serial.print(servo_out[CH_ROLL],2);
+ #if DEBUG_ROLL == 1
+  //Serial.print("  SensorAngle: ");
+  //Serial.print(roll_sensor/100,DEC);
+  //Serial.print("  StickPosition: ");
+  //Serial.print(servo_out[CH_ROLL],2);
  #endif
 }
 
@@ -55,15 +55,15 @@ void quad_trackrollpitchrate(void)
   servo_out[CH_PITCH] = PID((ReferencePitchRate - pitch_rate_sensor), deltaMiliSeconds, CASE_SERVO_PITCH);
   servo_out[CH_RUDDER] = PID((ReferenceYawRate - yaw_rate_sensor), deltaMiliSeconds, CASE_SERVO_RUDDER);
 			
- #if DEBUG_INFLIGHT == 1
-  Serial.print("  RadioTrim: ");
-  Serial.print(radio_trim[CH_ROLL]);
-  Serial.print("  RateSetPoint: ");
-  Serial.print(ReferenceRollRate/50,DEC);
-  Serial.print("  SensorRate: ");
-  Serial.print(roll_rate_sensor/50,DEC);
-  Serial.print("  EffStickPosition: ");
-  Serial.print(servo_out[CH_ROLL],2);
+ #if DEBUG_ROLL == 1
+  //Serial.print("  RadioTrim: ");
+  //Serial.print(radio_trim[CH_ROLL]);
+  Serial.print("\tCommand:\t");
+  Serial.print((float)(ReferenceRollRate)/50.f,2);
+  Serial.print("\tSensor:\t");
+  Serial.print((float)(roll_rate_sensor)/50.f,2);
+  //Serial.print("  EffStickPosition: ");
+  //Serial.print(servo_out[CH_ROLL],2);
  #endif
 }
 

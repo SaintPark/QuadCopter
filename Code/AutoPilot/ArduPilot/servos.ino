@@ -123,13 +123,13 @@ else
   quadmot_out[MOTOR3] = constrain(quadmot_out[MOTOR3],MIN_SPIN_PWM,2000);
 }
 
- #if DEBUG_INFLIGHT == 1
-  Serial.print("  RollDiffPwm: ");
-  Serial.print(roll_differential,DEC); 
-  Serial.print("  LeftMotor: ");
-  Serial.print(quadmot_out[MOTOR0],DEC);
-  Serial.print("  RightMotor: ");
-  Serial.println(quadmot_out[MOTOR1],DEC);
+ #if DEBUG_ROLL == 1
+  Serial.print("\tRollDiffPwm:\t");
+  Serial.print(roll_differential,DEC);
+  //Serial.print("  LeftMotor: ");
+  //Serial.print(quadmot_out[MOTOR0],DEC);
+  //Serial.print("  RightMotor: ");
+  //Serial.print(quadmot_out[MOTOR1],DEC);
  #endif
 
 

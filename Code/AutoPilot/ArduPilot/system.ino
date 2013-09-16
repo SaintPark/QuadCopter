@@ -249,7 +249,7 @@ void startup_ground_quad(void)
 
 	// Output waypoints for confirmation
 	// --------------------------------
-	print_waypoints();
+	//print_waypoints();
 
 	//Signal the IMU to perform ground start
 	//------------------------

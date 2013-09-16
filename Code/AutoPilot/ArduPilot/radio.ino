@@ -52,11 +52,10 @@ void read_radio()
 	radio_in[CH_PITCH] = (REVERSE_CH2_ELEVON*(ch2_temp-elevon2_trim) + REVERSE_CH1_ELEVON*(ch1_temp-elevon1_trim))/2 + 1500;
        #endif
         
-       #if DEBUG_INFLIGHT == 1
-        Serial.println("Roll:");
-        Serial.print("RadioIn: ");
-        Serial.print(radio_in[CH_ROLL],DEC);
-       #endif
+   #if DEBUG_ROLL == 1
+	//Serial.print("RadioIn: ");
+	//Serial.print(radio_in[CH_ROLL],DEC);
+   #endif
 
        #if REVERSE_THROTTLE
 	radio_in[CH_THROTTLE] = 3000 - radio_in[CH_THROTTLE];

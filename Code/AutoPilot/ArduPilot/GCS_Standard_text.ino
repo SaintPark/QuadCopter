@@ -195,3 +195,8 @@ void print_attitude(void)
 
 }
 #endif
+
+#if GCS_PROTOCOL == -1
+void send_message(byte id) {}
+void print_current_waypoints() {}
+#endif
